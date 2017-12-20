@@ -1,0 +1,41 @@
+<body>
+	<div id="root"></div>
+	<!-- the production version of react does not use prop types -->
+	<!-- use babel-plugin-transform-react-remove-prop-types further optimization -->
+	<script src="https://unpkg.com/react@16.0.0-rc.3/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16.0.0-rc.3/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/prop-types@15.6.0/prop-types.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+	<script type="text/babel">
+		const rootElement = document.getElementById('root')
+
+		function Message({message}) {
+			if (!message) {
+				return <div>No Message</div> 
+			}
+			return <div>{message}</div>
+		}
+
+		// jsx is just an abstraction for React.createElement
+		function Greeting({message}) {
+			if (!message) {
+				return React.createElement(
+					'div',
+					null,
+					'No Message'
+				)
+			}
+			return React.createElement('div', null, message)
+		}
+
+		ReactDOM.render(
+			<div>
+				<Message message={null} />
+				<Message message="Hello World!" />
+				<Greeting message="Goodbye World!" />
+			</div>,
+			rootElement
+		)	
+	</script>
+</body>
