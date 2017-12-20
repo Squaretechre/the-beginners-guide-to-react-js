@@ -1,0 +1,33 @@
+<body>
+	<div id="root"></div>
+	<script src="https://unpkg.com/react@16.0.0-rc.3/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16.0.0-rc.3/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+	<script type="text/babel">
+		const rootElement = document.getElementById('root')
+
+		const Message = props => <div>{props.msg}</div>
+		const MessageChildren = props => <div>{props.children}</div>
+
+		// React.createElement can take a string or a func as it's first arg
+		// for JSX to differentiate between whether to render a raw DOM element or a func,
+		// funcs must be capitalised, i.e. <Message />
+		// otherwise this transpiles to React.createElement("message", null)
+		const element = (
+			<div className="container">
+				<Message msg="Good morning World!" />
+				<MessageChildren>Good afternoon World!!</MessageChildren>
+				<MessageChildren>
+					Composed component
+					<MessageChildren>Inner component</MessageChildren>
+				</MessageChildren>
+				{React.createElement(Message, { msg: 'Hello World' })}
+				{Message({ msg: 'Hello World' })}
+				{Message({ msg: 'Goodbye World' })}
+			</div>
+		)
+
+		ReactDOM.render(element, rootElement)	
+	</script>
+</body>
