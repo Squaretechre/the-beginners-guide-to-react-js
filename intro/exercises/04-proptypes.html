@@ -1,0 +1,63 @@
+<body>
+	<div id="root"></div>
+	<!-- the production version of react does not use prop types -->
+	<!-- use babel-plugin-transform-react-remove-prop-types further optimization -->
+	<script src="https://unpkg.com/react@16.0.0-rc.3/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16.0.0-rc.3/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/prop-types@15.6.0/prop-types.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+	<script type="text/babel">
+		const rootElement = document.getElementById('root')
+
+		// supply a propTypes property to a functional component, sayHello.propTypes
+		function SayHello(props) {
+			return (
+				<div>
+					Hello {props.firstName} {props.lastName}!
+				</div>
+			)
+		}
+
+		const CustomPropTypes = {
+			string(props, propName, componentName) {
+				if (typeof props[propName] !== 'string') {
+					return new Error(`Hey, you should pass a string for ${propName} in ${componentName} but you pass a ${typeof props[propName]}!`)
+				}
+			}
+		}
+
+		// prop types are option by default
+		// if a prop isn't supplied to a component then the validator won't run
+		// passing only firstName will only cause validation on firstName, not lastName
+		SayHello.propTypes = {
+			firstName: PropTypes.string.isRequired,
+			lastName: PropTypes.string.isRequired
+		}
+
+		// add prop types as static property on class based components
+		class Greeting extends React.Component {
+			static propTypes = {
+				firstName: PropTypes.string.isRequired,
+				lastName: PropTypes.string.isRequired
+			}
+
+			render() {
+				const {firstName, lastName} = this.props
+				return (
+					<div>
+						Hello {firstName} {lastName}!
+					</div>
+				)
+			}
+		}
+
+		ReactDOM.render(
+			<div>
+				<SayHello firstName={true} />
+				<Greeting firstName={"John"} lastName={"Doe"} />
+			</div>,
+			rootElement
+		)	
+	</script>
+</body>
