@@ -1,0 +1,67 @@
+<body>
+	<div id="root"></div>
+	<!-- the production version of react does not use prop types -->
+	<!-- use babel-plugin-transform-react-remove-prop-types further optimization -->
+	<script src="https://unpkg.com/react@16.0.0-rc.3/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16.0.0-rc.3/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/prop-types@15.6.0/prop-types.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+	<style>
+		.box {
+			border: 2px solid black;
+		}
+
+		.box--small {
+			height: 60px;
+			width: 60px;
+		}
+	</style>
+
+	<script type="text/babel">
+		const rootElement = document.getElementById('root')
+
+		// object spread does a shallow merge
+		// so padding in a style prop to box will cause it to overwrite it's own style prop
+		function Box(props) {
+			return (
+				<div
+					className="box box--small"
+					style={{ paddingLeft: 20 }}
+					{...props}
+				/>
+			)
+		}
+
+		// however can use destructuring to extract the style prop and spread the remaining props
+		// add default value for className incase it is undefined
+		// style props are not vendor prefixed, you must do this yourself
+		// use a library such as styled components, emotion, glamorous
+		function BoxTwo({style, className = '', ...rest}) {
+			return (
+				<div
+					className={`box ${className}`}
+					style={{ paddingLeft: 20, ...style }}
+					{...rest}
+				/>
+			)	
+		}
+
+		const element = (
+			<div>
+				<Box style={{ backgroundColor: 'lightblue' }} >small box</Box>
+				<BoxTwo 
+					style={{ backgroundColor: 'lightblue' }} 
+					className="box--small"
+				>
+					small box
+				</BoxTwo>
+			</div>
+		)
+
+		ReactDOM.render(
+			element,
+			rootElement
+		)
+	</script>
+</body>
